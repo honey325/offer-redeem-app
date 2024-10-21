@@ -1,0 +1,178 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
+  engineType      = "library"
+}
+
+model User {
+  id             Int           @id @default(autoincrement())
+  email          String        @unique
+  fname          String
+  lname          String?
+  // city      Int
+  contact        String
+  optionMaster   optionMaster  @relation(fields: [roleId], references: [id])
+  roleId         Int
+  password       String?
+  activationCode String
+  isActive       Boolean       @default(false)
+  salt           String
+  createAt       DateTime      @default(now())
+  updateAt       DateTime      @updatedAt
+  deletedAt      DateTime?
+  isDelete       Boolean       @default(false)
+  review         review[]
+  stores         stores[]
+  photomaster    photomaster[]
+  videomaster    videomaster[]
+}
+
+model stores {
+  id         Int          @id @default(autoincrement())
+  name       String
+  about      String       @db.VarChar(200)
+  contact    String
+  user       User         @relation(fields: [owner], references: [id])
+  owner      Int
+  location   String
+  category   category     @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  isDelete   Boolean      @default(false)
+  createAt   DateTime     @default(now())
+  updateAt   DateTime     @updatedAt
+  deletedAt  DateTime?
+  review     review[]
+  gallary    gallery[]
+  storeOffer storeOffer[]
+}
+
+model offer {
+  id          Int          @id @default(autoincrement())
+  name        String       @unique
+  description String
+  isDelete    Boolean      @default(false)
+  createAt    DateTime     @default(now())
+  updateAt    DateTime     @updatedAt
+  deletedAt   DateTime?
+  storeOffer  storeOffer[]
+}
+
+model storeOffer {
+  storeId   Int
+  stores    stores    @relation(fields: [storeId], references: [id])
+  offerId   Int
+  offer     offer     @relation(fields: [offerId], references: [id])
+  code      String
+  startDate DateTime?
+  endDate   DateTime?
+  tNc       String
+  isDelete  Boolean   @default(false)
+  createAt  DateTime  @default(now())
+  updateAt  DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@id([storeId, offerId])
+  @@index([endDate])
+}
+
+model review {
+  user      User      @relation(fields: [userId], references: [id])
+  userId    Int
+  store     stores    @relation(fields: [storeId], references: [id])
+  storeId   Int
+  ratings   Int
+  content   String    @db.VarChar(1000)
+  isDelete  Boolean   @default(false)
+  createAt  DateTime  @default(now())
+  updateAt  DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@id([storeId, userId])
+}
+
+model category {
+  id          Int        @id @default(autoincrement())
+  name        String     @unique
+  referTo     Int?
+  Category    category?  @relation("selfrelation", fields: [referTo], references: [id])
+  subcategory category[] @relation("selfrelation")
+  isDelete    Boolean    @default(false)
+  createAt    DateTime   @default(now())
+  updateAt    DateTime   @updatedAt
+  deletedAt   DateTime?
+  stores      stores[]
+}
+
+model selectMaster {
+  id           Int            @id @default(autoincrement())
+  key          String         @unique
+  value        String
+  isDelete     Boolean        @default(false)
+  createAt     DateTime       @default(now())
+  updateAt     DateTime       @updatedAt
+  deletedAt    DateTime?
+  optionMaster optionMaster[]
+}
+
+model optionMaster {
+  id           Int          @id @default(autoincrement())
+  key          String       @unique
+  value        String
+  selectMaster selectMaster @relation(fields: [selectId], references: [id])
+  selectId     Int
+  User         User[]
+  isDelete     Boolean      @default(false)
+  createAt     DateTime     @default(now())
+  updateAt     DateTime     @updatedAt
+  deletedAt    DateTime?
+  gallary      gallery[]
+}
+
+model photomaster {
+  id           Int       @id @default(autoincrement())
+  path         String
+  user         User      @relation(fields: [userId], references: [id])
+  userId       Int
+  originalName String
+  fileSize     String
+  isDelete     Boolean   @default(false)
+  createAt     DateTime  @default(now())
+  updateAt     DateTime? @updatedAt
+  deletedAt    DateTime?
+}
+
+model videomaster {
+  id           Int       @id @default(autoincrement())
+  path         String
+  user         User      @relation(fields: [userId], references: [id])
+  userId       Int
+  originalName String
+  fileSize     String
+  isDelete     Boolean   @default(false)
+  createAt     DateTime  @default(now())
+  updateAt     DateTime  @updatedAt
+  deletedAt    DateTime?
+}
+
+model gallery {
+  id          Int          @id @default(autoincrement())
+  stores      stores       @relation(fields: [storeId], references: [id])
+  storeId     Int
+  op          optionMaster @relation(fields: [contentType], references: [id])
+  contentType Int
+  content     Int?
+  isDelete    Boolean      @default(false)
+  createAt    DateTime     @default(now())
+  updateAt    DateTime     @updatedAt
+  deletedAt   DateTime?
+
+  @@unique([content, contentType])
+}
