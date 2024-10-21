@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { DeleteReviewQuery, RestoreReviewQuery, SelectRatingQuery, UpdateInsertReviewQuery } from '../helper/ratings';
+import { DeleteReviewQuery, RestoreReviewQuery, SelectRatingQuery, UpdateInsertReviewQuery } from '../service/ratings';
 import { assertFunction, stringNumObject, User } from '../types/general';
 import { reviewInsert } from '../types/ratings';
 

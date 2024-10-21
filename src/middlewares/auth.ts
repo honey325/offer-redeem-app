@@ -2,7 +2,7 @@ import { Strategy, StrategyOptions } from 'passport-jwt';
 // import { logError } from "../logs";
 import { Request } from 'express';
 import { userResult } from '../types/user';
-import { userSelectQuery } from '../helper/user';
+import { userSelectQuery } from '../service/user';
 
 const cookieExtractor = function (req: Request) {
   return req.cookies?.token;

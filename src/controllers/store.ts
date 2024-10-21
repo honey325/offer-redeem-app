@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getstores, insertstoreQuery, updatestoreQuery } from '../helper/store';
+import { getstores, insertstoreQuery, updatestoreQuery } from '../service/store';
 import { User, assertFunction, stringNumObject, stringObject } from '../types/general';
 
 export async function getAllstores(req: Request, res: Response) {

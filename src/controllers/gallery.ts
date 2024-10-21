@@ -7,7 +7,7 @@ import {
   selectFromGallary,
   selectFromPhotoMaster,
   selectFromVideoMaster,
-} from '../helper/gallery';
+} from '../service/gallery';
 import { assertFunction, stringNumObject, User } from '../types/general';
 import { galleryResult, photoInsert, photoresult } from '../types/gallery';
 

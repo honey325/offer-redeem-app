@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { addOfferInStore, getAllOffers, updateOfferInStore } from '../helper/offer';
+import { addOfferInStore, getAllOffers, updateOfferInStore } from '../service/offer';
 import { v4 as uuidv4 } from 'uuid';
 import { stringNumObject, stringObject } from '../types/general';
 

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { userResult } from '../types/user';
-import { userSelectQuery, userUpdateQuery, userinsertQuery } from '../helper/user';
+import { userSelectQuery, userUpdateQuery, userinsertQuery } from '../service/user';
 import argon2 from 'argon2';
 import { v4 as uuidV4 } from 'uuid';
 import { User, assertFunction, stringObject } from '../types/general';

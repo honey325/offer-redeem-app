@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { userResult } from '../types/user';
-import { userSelectQuery } from '../helper/user';
+import { userSelectQuery } from '../service/user';
 import jwt from 'jsonwebtoken';
 import argon2 from 'argon2';
 import { stringObject } from '../types/general';
